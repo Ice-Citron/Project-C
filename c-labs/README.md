@@ -17,3 +17,10 @@ Initial labs:
 - `sensor-log-parser`
 - `hashmap`
 - `finite-state-machine`
+
+Start with:
+
+```sh
+cd dynamic-array
+make build
+```

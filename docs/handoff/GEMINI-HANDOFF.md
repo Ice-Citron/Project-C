@@ -2,7 +2,7 @@
 
 ## Current Context
 
-The user has just finished exams and is starting a new preparation repo called `Project-C`.
+The user has just finished exams and is starting a preparation repo called `Project-C`.
 
 Repo path:
 
@@ -18,7 +18,7 @@ This is the personal git repo inside a larger outer folder:
 
 The outer folder may later contain the official team working repo, external resources, notes, and experiments. The nested `Project-C/Project-C` directory is the user's personal repo for now.
 
-The user has significant prior C/C++ experience. They previously wrote C/OpenGL/game-engine-style code around 2023 without AI tools, so this is not beginner C learning. The goal is to reactivate speed, syntax fluency, and implementation instincts after a long break.
+The user has substantial prior C/C++ experience. They previously wrote C/OpenGL/game-engine-style code around 2023 without AI tools, so this is not beginner C learning. The goal is reactivation: rebuild syntax fluency, speed, memory-safety habits, and implementation instincts after a long break.
 
 ## Main Goals
 
@@ -42,34 +42,46 @@ Current planned tracks:
 c-labs/
 interview-prep/
 docs/
+docs/handoff/
 ```
 
-Current files:
+Current important files:
 
 ```text
 README.md
 c-labs/README.md
+c-labs/dynamic-array/README.md
+c-labs/dynamic-array/Makefile
+c-labs/dynamic-array/include/intvec.h
+c-labs/dynamic-array/src/intvec.c
+c-labs/dynamic-array/tests/test_intvec.c
 docs/tooling.md
+docs/handoff/GEMINI-HANDOFF.md
 interview-prep/system-design-template.md
 interview-prep/question-bank.md
 ```
 
-The starting plan is:
-
-1. Build small C components.
-2. Test them.
-3. Run with sanitizers.
-4. Discuss API/ownership/design tradeoffs.
-5. Repeat with gradually more realistic systems/robotics-style components.
-
-Suggested early C labs:
+The first concrete lab is:
 
 ```text
-dynamic-array
-ring-buffer
-sensor-log-parser
-hashmap
-finite-state-machine
+c-labs/dynamic-array
+```
+
+The initial task is to implement an integer dynamic array API:
+
+```c
+typedef struct {
+    int *data;
+    size_t len;
+    size_t cap;
+} IntVec;
+
+int intvec_init(IntVec *v);
+void intvec_free(IntVec *v);
+int intvec_push(IntVec *v, int value);
+int intvec_get(const IntVec *v, size_t index, int *out);
+int intvec_set(IntVec *v, size_t index, int value);
+size_t intvec_len(const IntVec *v);
 ```
 
 Suggested compile defaults:
@@ -165,8 +177,9 @@ Goal: implement a small component with conceptual and syntax hints.
 
 Use exercises like:
 
-- Implement `vec_init`.
-- Implement `vec_push`.
+- Implement `intvec_init`.
+- Implement `intvec_free`.
+- Implement `intvec_push`.
 - Implement `ring_buffer_write`.
 - Parse one telemetry line.
 - Update a finite-state machine from one event.
@@ -181,7 +194,7 @@ Use fewer syntax hints. Let the user recall the C details.
 
 ### Stage 4: No-Hint Practice
 
-Goal: exam/interview/project-style independence.
+Goal: project/interview-style independence.
 
 Give the task and expected behaviours only. Do not give syntax hints unless the user asks.
 
@@ -281,44 +294,19 @@ Prefer:
 
 ## Suggested First Gemini Session
 
-Start with the dynamic array lab because it reactivates core C quickly.
+Start with `c-labs/dynamic-array`.
 
 Recommended first flow:
 
 1. Explain what a dynamic array is in C.
-2. Show the target API:
-
-```c
-typedef struct {
-    int *data;
-    size_t len;
-    size_t cap;
-} IntVec;
-
-int intvec_init(IntVec *v);
-void intvec_free(IntVec *v);
-int intvec_push(IntVec *v, int value);
-int intvec_get(const IntVec *v, size_t index, int *out);
-```
-
-3. Give syntax hints for:
-
-```text
-typedef struct
-size_t
-malloc
-realloc
-free
-pointer parameter mutation
-v->field
-return codes
-```
-
-4. Ask line-matching questions first.
-5. Then ask the user to implement `intvec_init`.
-6. Then `intvec_free`.
-7. Then `intvec_push`.
-8. Then tests.
-9. Then repeat a similar exercise with a ring buffer and fewer hints.
+2. Ask the user to inspect `include/intvec.h` and identify the meaning of each field.
+3. Give line-matching questions for `size_t`, `v->field`, `malloc`, `realloc`, `free`, `sizeof *ptr`, and return codes.
+4. Ask the user to implement `intvec_init`.
+5. Then `intvec_free`.
+6. Then `intvec_push`.
+7. Then `intvec_get` and `intvec_set`.
+8. Then run `make test`.
+9. Then run `make asan`.
+10. Repeat a similar exercise with a ring buffer and fewer hints.
 
 The key is to rebuild fluency through active recall and implementation, not passive reading.

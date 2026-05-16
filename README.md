@@ -9,7 +9,7 @@ Main tracks:
 
 - `c-labs/`: small C implementation drills with tests, sanitizers, and clean APIs.
 - `interview-prep/`: 40-minute system-design and pseudocode practice.
-- `docs/`: reusable notes on tooling, patterns, and project conventions.
+- `docs/`: reusable notes on tooling, handoffs, patterns, and project conventions.
 
 ## Starting Strategy
 
@@ -31,3 +31,10 @@ Robotics should be the bias, not the cage. Good practice examples include ring b
 - Day 4: hashmap or lookup table with explicit ownership rules.
 - Day 5: tiny event loop or finite-state machine.
 - Daily: one 40-minute system-design drill using `interview-prep/system-design-template.md`.
+
+Start here:
+
+```sh
+cd c-labs/dynamic-array
+make build
+```
