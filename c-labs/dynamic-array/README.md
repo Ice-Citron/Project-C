@@ -30,10 +30,32 @@ make asan
 Answer these before coding.
 
 1. In `IntVec *v`, why do we use `v->len` instead of `v.len`?
+   Because v is a pointer, which means we can't directly access attribute `len`
+   using `.`, as it's not the actual struct object itself, but rather a pointer.
+   Hence we use `v->len`, which is equivalent to `(*v).len`, which first
+   dereferences the pointer v, before accessing struct-attribute `len`.
+
 2. What does `sizeof *v->data` mean, and why can it be safer than `sizeof(int)`?
+   Because if we decide to later decided to change the type of `data` from
+   `int` to other data-types such as `long long`, for example, using 
+   `sizeof *v->data` will ensure that `sizeof` compiler automatically feeds
+   the `sizeof` function the real type of the new `data`; which decreases the 
+   risk where after refactoring, the new programmer forget to modify the type of
+   `sizeof`.
+
 3. After `intvec_free(&v)`, what should `v.data`, `v.len`, and `v.cap` become?
+   They should be `NULL`?
+
 4. In `intvec_get`, why is `out` an `int *` rather than returning the integer directly?
+   I am unsure, but this reduces data duplication? As why create another copu of
+   the same data if you don't need to . Furthermore, by passing the original
+   object from the list; this allows the users to directly edit the returned
+   object itself.
+
 5. What should happen if `realloc` fails during `intvec_push`?
+   I'm not sure, but don't we normally only do `realloc` when we have reached
+   the threshold for allocating more space? Hence, `realloc` is used for
+   extensions?. Idk
 
 ## Syntax Hints
 
