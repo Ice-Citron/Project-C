@@ -1,5 +1,5 @@
 CC ?= clang
-CFLAGS ?= -std=c17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g
+CFLAGS ?= -std=c17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g -fsanitize=address,undefined -fno-omit-frame-pointer
 CPPFLAGS ?= -Iinclude
 SANFLAGS ?= -fsanitize=address,undefined -fno-omit-frame-pointer
 
