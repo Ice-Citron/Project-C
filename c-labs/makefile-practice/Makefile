@@ -9,3 +9,16 @@ OUT = build/test_runner
 # Default target: builds without sanitizers
 build: build
 	mkdir -p build
+	$(CC) $(CFLAGS) $(INCLUDES) $(SRC) -o $(OUT)
+
+# ASan target: builds with sanitizers
+asan: clean
+	mkdir -p build
+	$(CC) $(CFLAGS) $(ASAN_FLAGS) $(INCLUDES) $(SRC) -o $(OUT)
+
+# Test target: builds ASan and runs it immediately
+test: asan
+	./$(OUT)
+
+# Clean target: removes build artifacts
+clean: rm -rf build
