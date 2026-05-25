@@ -8,8 +8,13 @@ int get_bits(uint32_t value, int start, int end) {
     size_t width = (start - end) + 1;
     uint32_t mask = (width == 32) ? UINT32_MAX : ((1u << width) - 1u);
     value = value & mask;
-    printf("x=%"PRIu32"\n", value);
-    return value;
+    return value;           // printf("x=%"PRIu32"\n", value);
+}
+
+uint32_t get_bits(uint32_t value, int start, int end) {
+    unsigned int width = start + end + 1;
+    uint32_t mask = (width == 32) ? UINT32_MAX : ((1u << width) - 1u);
+    return (value >> end) & mask;
 }
 
 int main() {
