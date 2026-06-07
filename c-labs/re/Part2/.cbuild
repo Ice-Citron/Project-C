@@ -1,5 +1,5 @@
 TESTS	=	testfsm
 BUILD	=	$(TESTS)
-CFLAGS	=	-Wall -g -I../lib
+CFLAGS	=	-Wall -Wextra -Wconversion -Wshadow -Wpedantic -g -I../lib
 LDFLAGS =	-L../lib -lsupport -ltermcap
 TEST1	=	../summarisetests $(TESTS)

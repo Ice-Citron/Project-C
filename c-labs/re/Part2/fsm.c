@@ -12,7 +12,7 @@
 #include "token.h"
 
 #define FSM_DEBUG
-#undef  FSM_DEBUG
+// #undef  FSM_DEBUG
 
 
 #ifdef FSM_DEBUG
@@ -50,7 +50,12 @@ FSM_fleet fsm_create_fleet( FSM *fsm, FSM_data_creator dc )
 
 	// STUB: question 2a, implement missing code to populate
 	// the dynarray in *l
-
+	l->len = 0;
+	l->cap = 1;
+	ASM *asm_one = malloc( sizeof(*asm_one) );
+	assert(asm_one != NULL);
+	l->actsm = asm_one;
+	
 	assert( l->actsm != NULL );
 	asm_no     = 1;
 	l->actsm[0].number    = asm_no++;
@@ -69,11 +74,17 @@ void fsm_addto_fleet( FSM_fleet l, int state, int data )
 	if( l->cap == l->len )	// need to grow the dynarray
 	{
 		// STUB: question 2b, implement this missing code
+		l->cap *= 2;
+		l->actsm = realloc(l->actsm, l->cap * sizeof(ASM));
+		assert(l->actsm != NULL);
 	}
 	l->actsm[l->len].number    = asm_no++;
 
 	// STUB: question 2b, add this missing code too to set
 	// the rest of actsm[len] and inc len
+	l->actsm[l->len].currstate = state;
+	l->actsm[l->len].data = data;
+	l->len++;
 
 	#ifdef FSM_DEBUG
 	printf( "debug: cloned new asm %d", asm_no-1 );
@@ -151,6 +162,10 @@ static void find_matching_arcs( int tok, FSM_state *cs, int *mp, int *nm )
 
 	for( int i=0; i<narcs; i++, a++ )
 	{
+		if (accepttok( a->tok, tok, nmatches != 0)) {
+			mp[nmatches] = i;
+			nmatches++;
+		}
 		// STUB: question 2c, implement this missing code
 		// to determine whether a->tok matches tok, and if so,
 		// append position i to the mp[] array
@@ -320,6 +335,15 @@ void fsm_update_fleet( FSM_fleet l, int tok )
 	// STUB: question 2d, write missing code to do this.
 	// Hint: use fsm_removefrom_fleet( l, pos ) to remove
 	// one failed asm.
+
+	
+	// for all ASM inside FSM_fleet
+	for (int pos=0; pos<l->len; pos++) {
+		if (l->actsm[pos].currstate == FAIL) {
+			fsm_removefrom_fleet(l, pos);
+			pos--;
+		}
+	}	
 }
 
 

@@ -79,7 +79,10 @@ static char *ban_matrix[8] =
 //
 char char_in_common( char *a, char *b )
 {
-	// STUB: Question 1: implement this
+	for (char *ptr = a; *ptr != '\0'; ptr++) {
+		char *common_c = strchr(b, *ptr);
+		if (common_c != NULL) return *common_c;
+	}
 	return '\0';
 }
 
