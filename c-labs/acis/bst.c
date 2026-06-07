@@ -33,7 +33,12 @@ struct bst
 bst make_empty_bst( bst_printkv_func pf, bst_freev_func ff )
 {
 	// TASK 3a: IMPLEMENT THIS.
-	return NULL;
+	bst new = malloc(sizeof(*new));
+	assert (new != NULL);
+	new->pf = pf;
+	new->ff = ff;
+	new->t = NULL;
+	return new;
 }
 
 
@@ -45,7 +50,17 @@ bst make_empty_bst( bst_printkv_func pf, bst_freev_func ff )
 static bintree makenode( char *key, void *value )
 {
 	// TASK 3b: IMPLEMENT THIS.
-	return NULL;
+	bintree node = malloc(sizeof(*node));
+	assert(node != NULL);
+
+	node->key = strdup(key);
+	assert(node->key != NULL);
+
+	node->value = value;
+	node->left = NULL;
+	node->right = NULL;
+
+	return node;
 }
 
 
@@ -58,7 +73,39 @@ static bintree makenode( char *key, void *value )
 //
 void add_bst( bst b, char *key, void *value )
 {
-	// TASK 3c: IMPLEMENT THIS.
+	assert(b != NULL);
+	if (b->t == NULL) {
+		b->t = makenode(key, value);
+		return;
+	}
+
+	bintree curr = b->t;
+
+	while (curr != NULL) {
+		int cmp = strcmp(key, curr->key);
+
+		if (cmp == 0) {	// already exists
+			if (b->ff != NULL) {	// free old value
+				b->ff(curr->value);
+				curr->value = strdup(value);
+			}
+		}
+
+		
+		if (cmp < 0) { // to left
+			if (curr->left == NULL) {
+				curr->left = makenode(key, value);
+				return;
+			}
+			curr = curr->left;
+		} else if (cmp > 0) { // to right
+			if (curr->right == NULL) {
+				curr->right = makenode(key, value);
+				return;
+			}
+			curr = curr->right;
+		}
+	}
 }
 
 
