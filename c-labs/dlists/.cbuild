@@ -11,8 +11,9 @@ CFLAGS = -g -Wall -I.
 # then edit this file and add " -llablist" to LDLIBS
 # so, if you couldn't get either to work, you might end up with
 # LDLIBS = -L. -lio -llablist -llabperson
+# -lio
 
-LDLIBS = -L. -lio
+LDLIBS = -L. 
 
 BUILD = testlist testplist testperson testdepartment testdlist testageinfo readdata
 

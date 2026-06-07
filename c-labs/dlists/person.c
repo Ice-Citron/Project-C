@@ -52,12 +52,19 @@ void person_free( person p ) {
   free( p );
 }
 
+static void uppercase_string(char *s) {
+  for (; *s != '\0'; s++) {
+    *s = (char)toupper(*s);
+  }
+}
 
 // person_uppercase_names( p );
 //   Uppercase both the person's firstname and lastname.
 //
 void person_uppercase_names( person p ) {
   // Task 1: WRITE YOUR OWN CODE HERE
+  uppercase_string(p->firstname);
+  uppercase_string(p->lastname);
 }
 
 
