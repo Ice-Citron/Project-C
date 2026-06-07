@@ -14,25 +14,32 @@
 #include "everyline.h"
 #include "match.h"
 
+static analysis current_analysis = NULL;
 
 static void recordmain( char *filename )
 {
 	printf( "debug: %s contains main()\n", filename );
-	// TASK 4: build mainset.
+	add_set(current_analysis->mainset, filename);
 }
 
 
 static void recordfileexists( char *filename )
 {
 	printf( "debug: file %s exists\n", filename );
-	// TASK 4: build existset.
+	add_set(current_analysis->existset, filename);	
 }
 
 
 static void recordinclude( char *filename, char *oneinc )
 {
 	printf( "debug: %s directly includes %s\n", filename, oneinc );
-	// TASK 4: build c2inc.
+
+	set curr_set = get_bst(current_analysis->c2inc, filename);
+	if (curr_set == NULL) {
+		curr_set = make_set();
+		add_bst(current_analysis->c2inc, filename, curr_set);
+	}
+	add_set(curr_set, oneinc);
 }
 
 
@@ -77,9 +84,11 @@ static analysis make_analysis( void )
 {
 	analysis a = malloc( sizeof(struct analysis) );
 	assert( a != NULL );
-	a->existset = NULL;
-	a->mainset = NULL;
-	a->c2inc = NULL;
+	a->existset = make_set();
+	a->mainset = make_set();
+	a->c2inc = make_empty_bst(&print_wrapper, &free_wrapper);
+
+	current_analysis = a;
 	return a;
 }
 

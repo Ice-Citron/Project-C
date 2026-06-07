@@ -91,7 +91,6 @@ void add_bst( bst b, char *key, void *value )
 			}
 		}
 
-		
 		if (cmp < 0) { // to left
 			if (curr->left == NULL) {
 				curr->left = makenode(key, value);
