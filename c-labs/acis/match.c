@@ -27,6 +27,20 @@
 //
 char * matchwords( char *target, char **wds )
 {
-	// TASK 2: IMPLEMENT THIS
-	return NULL;
+	char **ptr = wds;
+	for (char **ptr = wds; *ptr != NULL; ptr++) {
+		while (isspace(*target)) {
+			target++;
+		}
+		char *curr_word = *ptr;
+		size_t word_len = strlen(*ptr);
+		if (strncmp(curr_word, target, word_len) != 0) {
+			return NULL;
+		}
+		target += word_len;
+	}
+	while (isspace(*target)) {
+		target++;
+	}
+	return target;
 }
