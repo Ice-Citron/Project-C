@@ -12,9 +12,10 @@ CFLAGS = -g -Wall -I.
 # so, if you couldn't get either to work, you might end up with
 # LDLIBS = -L. -lio -llablist -llabperson
 # -lio
+# BUILD = testlist testplist testperson testdepartment testdlist testageinfo readdata
 
-LDLIBS = -L. 
+LDLIBS = -L.
 
-BUILD = testlist testplist testperson testdepartment testdlist testageinfo readdata
+BUILD = testlist testplist testperson testdepartment testdlist testageinfo 
 
 TEST1 = ./summarisetests --max 10 ./testperson ./testlist ./testplist ./testdepartment ./testdlist ./testageinfo

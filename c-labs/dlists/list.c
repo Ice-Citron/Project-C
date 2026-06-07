@@ -31,10 +31,16 @@ struct list {
 //   Create an empty list with the given element comparator,
 //   sprint element and free element function pointers.
 //
-list make_list( list_cmpf cmpf, list_sprintf spef, list_freef fef )
-{
-  // Task 2a: WRITE YOUR OWN CODE HERE
-  return NULL;
+list make_list( list_cmpf cmpf, list_sprintf spef, list_freef fef ) {
+  list new  = malloc(sizeof(struct list));
+  assert(new != NULL);
+
+  new->data = NULL;
+  new->cmpf = cmpf;
+  new->spef = spef;
+  new->fef  = fef;
+
+  return new;
 }
 
 
@@ -43,8 +49,11 @@ list make_list( list_cmpf cmpf, list_sprintf spef, list_freef fef )
 //   Return the new listdata.
 //
 static listdata listdata_cons( LIST_ELEMENT head, listdata tail ) {
-  // Task 2b: WRITE YOUR OWN CODE HERE
-  return NULL;
+  listdata new = malloc(sizeof(struct listdata));
+  assert(new != NULL);
+  new->head = head;
+  new->tail = tail;
+  return new;
 }
 
 
@@ -89,9 +98,12 @@ void list_addsorted( list l, LIST_ELEMENT v ) {
   // - a node whose head h is <= v (bip->head <= v) and
   // - EITHER it is the very last node (bip->tail == NULL)
   //   or the following node's head (bip->tail->head) > v)
-  listdata bip;
+  listdata bip = l->data;
 
   // Task 2c: WRITE YOUR OWN CODE HERE
+  while (bip->tail != NULL && l->cmpf( bip->tail->head, v ) <= 0) {
+    bip = bip->tail;
+  }
 
   assert( bip != NULL );
   assert( l->cmpf( bip->head, v ) <= 0 );

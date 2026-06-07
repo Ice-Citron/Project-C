@@ -140,11 +140,16 @@ void dlist_foreach_member( list dl, department_foreachf cb, void *state ) {
   list_foreach( dl, &dept_in_dlist_cb, &s );
 }
 
+static void print_dept_member(char *deptname, person member, void *state) {
+  FILE *out = (FILE *)state;
+  fprintf(out, "dept %s, member %s %s %s (age %d)\n", deptname, member->title, 
+            member->firstname, member->lastname, member->age);
+}
 
 // dlist_print( out, dl );
 //	Print dlist dl to file out
 //
 void dlist_print( FILE *out, list dl )
 {
-  list_print( out, dl );
+  dlist_foreach_member(dl, &print_dept_member, out);
 }
