@@ -1,2 +1,2 @@
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -Wextra -Wpedantic -Wshadow -Wconversion
 BUILD = testeveryline testmatch findallincludes testbst testset testanalyse

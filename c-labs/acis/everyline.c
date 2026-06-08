@@ -19,5 +19,22 @@
 int foreveryline( char *filename, everylinecb eachlinef )
 {
 	// TASK 1: IMPLEMENT THIS
-	return -1;
+	FILE *fp = fopen(filename, "r");
+	if (fp == NULL) {
+		return -1;
+	}
+
+	line buffer;
+	size_t line_number = 0;
+	while (fgets(buffer, MAXLINELEN, fp) != NULL) {
+		line_number++;
+		size_t len = strnlen(buffer, MAXLINELEN); 
+		if (buffer[len - 1] == '\n') {
+			buffer[len - 1] = '\0';
+		}
+		eachlinef(filename, line_number, buffer);
+	}
+	
+	fclose(fp);
+	return line_number;
 }
