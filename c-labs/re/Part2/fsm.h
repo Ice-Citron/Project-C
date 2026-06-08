@@ -42,7 +42,7 @@ typedef struct
 typedef struct
 {
 	int	   narcs;		// number of arcs
-	FSM_arc    arc[FSM_MAXARCS];    // arc[0..narcs-1]
+	FSM_arc    arc[];    // arc[0..narcs-1]
 } FSM_state;
 
 // the whole FSM

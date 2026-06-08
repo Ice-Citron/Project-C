@@ -12,7 +12,7 @@
 #include "token.h"
 
 #define MAKEFSM_DEBUG
-#undef MAKEFSM_DEBUG
+// #undef MAKEFSM_DEBUG
 
 
 //
@@ -25,6 +25,11 @@ void arc( FSM_state *state, int tok, int nextstate )
 	assert( n < FSM_MAXARCS );
 
 	// STUB: question 3a: complete arc()
+	FSM_arc *new_arc = malloc( sizeof(*new_arc) );
+	assert(new_arc != NULL);
+	new_arc->tok = tok;
+	new_arc->nextstate = nextstate;
+	state->arc[n] = *new_arc;
 }
 
 
@@ -98,16 +103,24 @@ void append_spat( SimplePat spat, FSM *fsm )
 		arc( sn, UNLABELLED_TOK, nplus1 );
 		break;
 	case SimpleType_is_DotStar:
-		// STUB add code here
+		arc( sn, ANY_TOK, n );
+		arc( sn, UNLABELLED_TOK, nplus1 );
 		break;
 	case SimpleType_is_Star:
-		// STUB add code here
+		arc_set( sn, set, n );
+		arc( sn, UNLABELLED_TOK, nplus1 );
 		break;
 	case SimpleType_is_DotPlus:
-		// STUB add code here
+		arc( sn, ANY_TOK, nplus1 );
+		arc( sn, DEFAULT_TOK, FAIL );
+		arc( snplus1, ANY_TOK, nplus1 );
+		arc( snplus1, UNLABELLED_TOK, nplus2 );
 		break;
 	case SimpleType_is_Plus:
-		// STUB add code here
+		arc_set( sn, set, nplus1 );
+		arc( sn, DEFAULT_TOK, FAIL );
+		arc_set( snplus1, set, nplus1 );
+		arc( snplus1, UNLABELLED_TOK, nplus2 );
 		break;
 	}
 }
@@ -240,7 +253,8 @@ void phase2( RE re, FSM *fsm )
 
 		// STUB: question 3c: this code to deal with an
 		// endanchor is missing. complete it (see Figure 3).
-
+		arc(sextra, '\0', extranode+1);
+		arc(sextra, DEFAULT_TOK, FAIL);
 		altered = true;
 	} else
 	{
@@ -393,6 +407,12 @@ static void compute_reachable( bool *reachable, FSM *fsm )
 		// STUB: add your code here, roughly speaking
 		// "foreach arc, if the arc nextstate is not FAIL
 		//  then reachable[that nextstate] = true"
+		for (int i = 0; i < nt; i++) {
+			FSM_arc arc = sp->arc[i];
+			if (arc.nextstate != FAIL) {
+				reachable[arc.nextstate] = true;
+			}
+		}
 	}
 }
 
